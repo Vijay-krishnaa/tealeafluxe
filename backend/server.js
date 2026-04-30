@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import path from "path";
 import { fileURLToPath } from "url";
+
 import authRoutes from "./routes/auth.js";
 import productRoutes from "./routes/products.js";
 import wishlistRoutes from "./routes/wishlist.js";
@@ -14,9 +15,11 @@ import heroSlidesRoutes from "./routes/heroSlides.js";
 import uploadRoutes from "./routes/upload.js";
 import bannerOffersRoutes from "./routes/bannerOffers.js";
 
+// Fix __dirname for ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Load environment variables
 dotenv.config();
 
 const app = express();
@@ -28,22 +31,25 @@ app.use(
   cors({
     origin: process.env.FRONTEND_URL || "http://localhost:5173",
     credentials: true,
-  })
+  }),
 );
 
-// Serve static files for uploads
+// Serve static files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Connect to MongoDB with retry logic
+// ✅ MongoDB connection with safety check
 const connectMongoDB = async (retries = 5) => {
-  // Convert SRV to standard connection string if needed
-  let uri = process.env.MONGODB_URI;
-  if (uri.includes('mongodb+srv://')) {
-    // For SRV format, mongoose handles it automatically with DNS lookup
-    // But if DNS is blocked, we need standard format
-    console.log("Using connection string as provided...");
+  const uri = process.env.MONGODB_URI;
+
+  if (!uri) {
+    console.error("❌ MONGODB_URI is NOT defined in .env file");
+    process.exit(1);
   }
-  
+
+  if (uri.includes("mongodb+srv://")) {
+    console.log("🔗 Using MongoDB SRV connection...");
+  }
+
   for (let i = 0; i < retries; i++) {
     try {
       await mongoose.connect(uri, {
@@ -51,27 +57,29 @@ const connectMongoDB = async (retries = 5) => {
         connectTimeoutMS: 10000,
         socketTimeoutMS: 45000,
         retryWrites: true,
-        w: 'majority',
+        w: "majority",
         maxPoolSize: 10,
         maxIdleTimeMS: 30000,
-        family: 4 // Force IPv4 to fix DNS ECONNREFUSED issues on Windows
+        family: 4,
       });
+
       console.log("✅ MongoDB connected");
       return;
     } catch (err) {
       console.error(`❌ Attempt ${i + 1} failed:`, err.message);
+
       if (i < retries - 1) {
-        console.log(`Retrying in 3 seconds...`);
-        await new Promise(resolve => setTimeout(resolve, 3000));
+        console.log("⏳ Retrying in 3 seconds...");
+        await new Promise((res) => setTimeout(res, 3000));
       } else {
-        console.error("❌ Failed to connect to MongoDB after retries");
-        // Instead of exiting, keep the server running so frontend works
-        console.log("⚠️  MongoDB not available, but server is running");
+        console.error("❌ Failed to connect to MongoDB");
+        console.log("⚠️ Server will continue without DB");
       }
     }
   }
 };
 
+// Connect DB
 connectMongoDB();
 
 // Routes
