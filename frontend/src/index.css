@@ -1,0 +1,159 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-display: "Lora";
+    --font-body: "DM Sans";
+    --font-mono: "Geist Mono";
+    --radius: 0.625rem;
+
+    --background: 0.96 0.02 50;
+    --foreground: 0.12 0.01 0;
+    --card: 0.98 0.01 50;
+    --card-foreground: 0.12 0.01 0;
+    --popover: 0.98 0.01 50;
+    --popover-foreground: 0.12 0.01 0;
+
+    --primary: 0.52 0.12 155;
+    --primary-foreground: 0.96 0.01 50;
+
+    --secondary: 0.88 0.08 60;
+    --secondary-foreground: 0.12 0.01 0;
+    --muted: 0.88 0.04 50;
+    --muted-foreground: 0.45 0.02 0;
+
+    --accent: 0.62 0.08 70;
+    --accent-foreground: 0.96 0.01 50;
+
+    --destructive: 0.55 0.22 25;
+    --destructive-foreground: 0.96 0.01 50;
+
+    --border: 0.92 0.02 50;
+    --input: 0.92 0.02 50;
+    --ring: 0.52 0.12 155;
+
+    --chart-1: 0.52 0.12 155;
+    --chart-2: 0.62 0.08 70;
+    --chart-3: 0.88 0.08 60;
+    --chart-4: 0.65 0.11 155;
+
+    --sidebar: 0.96 0.02 50;
+    --sidebar-foreground: 0.12 0.01 0;
+    --sidebar-primary: 0.52 0.12 155;
+    --sidebar-primary-foreground: 0.96 0.01 50;
+    --sidebar-accent: 0.88 0.08 60;
+    --sidebar-accent-foreground: 0.12 0.01 0;
+    --sidebar-border: 0.92 0.02 50;
+    --sidebar-ring: 0.52 0.12 155;
+
+    --tea-green: oklch(0.52 0.12 155);
+    --tea-green-light: oklch(0.65 0.1 155);
+    --tea-cream: oklch(0.96 0.02 50);
+    --tea-gold: oklch(0.62 0.08 70);
+    --tea-gold-light: oklch(0.82 0.06 70);
+    --tea-warm: oklch(0.88 0.08 60);
+    --shadow-tea: 0 4px 24px -4px oklch(0.52 0.12 155 / 0.12), 0 1px 4px
+      oklch(0.52 0.12 155 / 0.06);
+    --shadow-card: 0 2px 16px -2px oklch(0.52 0.12 155 / 0.08), 0 1px 3px
+      oklch(0 0 0 / 0.04);
+  }
+
+  .dark {
+    --background: 0.13 0.02 160;
+    --foreground: 0.92 0.01 50;
+    --card: 0.17 0.022 160;
+    --card-foreground: 0.92 0.01 50;
+    --popover: 0.18 0.025 160;
+    --popover-foreground: 0.92 0.01 50;
+
+    --primary: 0.68 0.13 155;
+    --primary-foreground: 0.13 0.02 160;
+
+    --secondary: 0.22 0.02 50;
+    --secondary-foreground: 0.85 0.01 50;
+    --muted: 0.21 0.025 160;
+    --muted-foreground: 0.52 0.015 160;
+
+    --accent: 0.72 0.14 70;
+    --accent-foreground: 0.13 0.02 70;
+
+    --destructive: 0.55 0.22 25;
+    --destructive-foreground: 0.92 0.01 25;
+
+    --border: 0.26 0.022 160;
+    --input: 0.26 0.022 160;
+    --ring: 0.68 0.13 155;
+
+    --chart-1: 0.68 0.13 155;
+    --chart-2: 0.72 0.14 70;
+    --chart-3: 0.75 0.12 55;
+    --chart-4: 0.6 0.16 165;
+    --chart-5: 0.68 0.12 80;
+
+    --sidebar: 0.17 0.022 160;
+    --sidebar-foreground: 0.92 0.01 50;
+    --sidebar-primary: 0.68 0.13 155;
+    --sidebar-primary-foreground: 0.13 0.02 160;
+    --sidebar-accent: 0.22 0.02 50;
+    --sidebar-accent-foreground: 0.85 0.01 50;
+    --sidebar-border: 0.26 0.022 160;
+    --sidebar-ring: 0.68 0.13 155;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  .transition-smooth {
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .transition-colors-smooth {
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s
+      ease, opacity 0.2s ease;
+  }
+  .shadow-tea {
+    box-shadow: var(--shadow-tea);
+  }
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+  .input-on-dark::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  .input-on-dark {
+    color: #ffffff;
+  }
+}
+
+@font-face {
+  font-family: "Lora";
+  src: url("/assets/fonts/Lora.woff2") format("woff2");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DM Sans";
+  src: url("/assets/fonts/DMSans.woff2") format("woff2");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/assets/fonts/GeistMono.woff2") format("woff2");
+  font-display: swap;
+}
